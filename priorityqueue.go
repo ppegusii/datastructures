@@ -72,7 +72,7 @@ func (this *priorityQueue) Length() int {
 	return len(this.itemHeap)
 }
 
-func (this *priorityQueue) Peak() interface{} {
+func (this *priorityQueue) Head() interface{} {
 	this.RLock()
 	defer this.RUnlock()
 	var length int = len(this.itemHeap)

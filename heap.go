@@ -122,7 +122,7 @@ func (this *myHeap) Length() int {
 	return len(this.itemHeap)
 }
 
-func (this *myHeap) Peak() (interface{}, ID) {
+func (this *myHeap) Head() (interface{}, ID) {
 	this.RLock()
 	defer this.RUnlock()
 	var length int = len(this.itemHeap)
