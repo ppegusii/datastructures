@@ -1,18 +1,19 @@
 package datastructures
 
 import (
+	"github.com/oleiade/lane"
 	"github.com/stretchr/testify/assert"
 	"math/rand"
 	"testing"
 	"time"
 )
 
-const BENCH_Q_SIZE int = 1000
+const BENCH_Q_SIZE int = 1000000
 
 func TestPriorityQueue_order_int(t *testing.T) {
 	pq := NewPriorityQueue(Less(func(x, y interface{}) bool {
 		return x.(int) < y.(int)
-	}), 10)
+	}), 0)
 
 	//Populate the priority queue with random ints
 	var src rand.Source = rand.NewSource(0)
@@ -23,7 +24,7 @@ func TestPriorityQueue_order_int(t *testing.T) {
 			pq.Length() == i,
 			"pq.Length() = %d; want %d", pq.Length(), i,
 		)
-		pq.PushItem(r.Int())
+		pq.Insert(r.Int())
 	}
 	var prev int = pq.PopTop().(int)
 	var next int
@@ -46,11 +47,27 @@ func BenchmarkPriorityQueue_int(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		//Populate the priority queue with random ints
 		for i := 0; i < BENCH_Q_SIZE; i++ {
-			pq.PushItem(r.Int())
+			pq.Insert(r.Int())
 		}
 		//Empty the priority queue
 		for i := 0; i < BENCH_Q_SIZE; i++ {
 			pq.PopTop()
+		}
+	}
+}
+
+func BenchmarkLanePriorityQueue_int(b *testing.B) {
+	pq := lane.NewPQueue(lane.MINPQ)
+	var src rand.Source = rand.NewSource(0)
+	var r *rand.Rand = rand.New(src)
+	for n := 0; n < b.N; n++ {
+		//Populate the priority queue with random ints
+		for i := 0; i < BENCH_Q_SIZE; i++ {
+			pq.Push(0, r.Int())
+		}
+		//Empty the priority queue
+		for i := 0; i < BENCH_Q_SIZE; i++ {
+			pq.Pop()
 		}
 	}
 }
@@ -69,7 +86,7 @@ func TestPriorityQueue_order_Time(t *testing.T) {
 			pq.Length() == i,
 			"pq.Length() = %d; want %d", pq.Length(), i,
 		)
-		pq.PushItem(time.Now().Add(time.Hour * time.Duration(r.Int())))
+		pq.Insert(time.Now().Add(time.Hour * time.Duration(r.Int())))
 	}
 	var prev time.Time = pq.PopTop().(time.Time)
 	var next time.Time
@@ -92,7 +109,7 @@ func BenchmarkPriorityQueue_Time(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		//Populate the priority queue with random ints
 		for i := 0; i < BENCH_Q_SIZE; i++ {
-			pq.PushItem(time.Now().Add(time.Hour * time.Duration(r.Int())))
+			pq.Insert(time.Now().Add(time.Hour * time.Duration(r.Int())))
 		}
 		//Empty the priority queue
 		for i := 0; i < BENCH_Q_SIZE; i++ {

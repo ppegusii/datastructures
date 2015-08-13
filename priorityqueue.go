@@ -75,14 +75,13 @@ func (this *priorityQueue) Length() int {
 func (this *priorityQueue) Head() interface{} {
 	this.RLock()
 	defer this.RUnlock()
-	var length int = len(this.itemHeap)
-	if length == 0 {
+	if this.Len() == 0 {
 		return nil
 	}
 	return this.itemHeap[len(this.itemHeap)-1]
 }
 
-func (this *priorityQueue) PushItem(x interface{}) {
+func (this *priorityQueue) Insert(x interface{}) {
 	this.Lock()
 	defer this.Unlock()
 	heap.Push(this, x)
@@ -91,5 +90,8 @@ func (this *priorityQueue) PushItem(x interface{}) {
 func (this *priorityQueue) PopTop() interface{} {
 	this.Lock()
 	defer this.Unlock()
+	if this.Len() == 0 {
+		return nil
+	}
 	return heap.Pop(this)
 }

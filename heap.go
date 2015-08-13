@@ -133,7 +133,7 @@ func (this *myHeap) Head() (interface{}, ID) {
 	return i.value, i.id
 }
 
-func (this *myHeap) PushItem(x interface{}) ID {
+func (this *myHeap) Insert(x interface{}) ID {
 	this.Lock()
 	defer this.Unlock()
 	var id ID = this.nextId()

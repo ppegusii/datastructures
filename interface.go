@@ -12,7 +12,7 @@ type Heap interface {
 	// Return the item at the top of the heap along with its id.
 	Head() (interface{}, ID)
 	// Returns the id of the pushed item, which can be used when calling Remove().
-	PushItem(x interface{}) ID
+	Insert(x interface{}) ID
 	// Remove and return the item at the top of the heap along with its id.
 	PopTop() (interface{}, ID)
 	// Remove and return the item with the given id.
@@ -27,7 +27,8 @@ type Less func(x, y interface{}) bool
 
 type PriorityQueue interface {
 	Length() int
+	// Returns the highest priority item or nil if the queue is empty.
 	Head() interface{}
-	PushItem(x interface{})
+	Insert(x interface{})
 	PopTop() interface{}
 }
