@@ -1,7 +1,7 @@
 package datastructures
 
 import (
-	"github.com/oleiade/lane"
+	//"github.com/oleiade/lane"
 	"github.com/stretchr/testify/assert"
 	"math/rand"
 	"testing"
@@ -56,6 +56,7 @@ func BenchmarkPriorityQueue_int(b *testing.B) {
 	}
 }
 
+/*
 func BenchmarkLanePriorityQueue_int(b *testing.B) {
 	pq := lane.NewPQueue(lane.MINPQ)
 	var src rand.Source = rand.NewSource(0)
@@ -71,6 +72,7 @@ func BenchmarkLanePriorityQueue_int(b *testing.B) {
 		}
 	}
 }
+*/
 
 func TestPriorityQueue_order_Time(t *testing.T) {
 	pq := NewPriorityQueue(Less(func(x, y interface{}) bool {
