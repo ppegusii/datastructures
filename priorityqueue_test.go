@@ -4,6 +4,7 @@ import (
 	//"github.com/oleiade/lane"
 	"github.com/stretchr/testify/assert"
 	"math/rand"
+	"sort"
 	"testing"
 	"time"
 )
@@ -18,14 +19,39 @@ func TestPriorityQueue_order_int(t *testing.T) {
 	//Populate the priority queue with random ints
 	var src rand.Source = rand.NewSource(0)
 	var r *rand.Rand = rand.New(src)
+	items := make(map[int]bool)
 	for i := 0; i < 10; i++ {
 		assert.True(
 			t,
 			pq.Length() == i,
 			"pq.Length() = %d; want %d", pq.Length(), i,
 		)
-		pq.Insert(r.Int())
+		n := r.Int()
+		pq.Insert(n)
+		items[n] = true
 	}
+	// test Items
+	sortedItems := make([]int, len(items))
+	ctr := 0
+	for n, _ := range items {
+		sortedItems[ctr] = n
+		ctr++
+	}
+	sort.Ints(sortedItems)
+	recItems := pq.Items()
+	recInts := make([]int, len(recItems))
+	for i, n := range recItems {
+		recInts[i] = n.(int)
+	}
+	sort.Ints(recInts)
+	for i, n := range recInts {
+		assert.True(
+			t,
+			sortedItems[i] == n,
+			"put and recovered items %d, &d not equal", sortedItems[i], n,
+		)
+	}
+	// test order
 	var prev int = pq.PopTop().(int)
 	var next int
 	for pq.Length() > 0 {

@@ -30,5 +30,7 @@ type PriorityQueue interface {
 	// Returns the highest priority item or nil if the queue is empty.
 	Head() interface{}
 	Insert(x interface{})
+	// Returns all items in the priority queue.
+	Items() []interface{}
 	PopTop() interface{}
 }

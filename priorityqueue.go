@@ -87,6 +87,14 @@ func (this *priorityQueue) Insert(x interface{}) {
 	heap.Push(this, x)
 }
 
+func (this *priorityQueue) Items() []interface{} {
+	this.RLock()
+	defer this.RUnlock()
+	dst := make([]interface{}, this.Len())
+	copy(dst, this.itemHeap)
+	return dst
+}
+
 func (this *priorityQueue) PopTop() interface{} {
 	this.Lock()
 	defer this.Unlock()
